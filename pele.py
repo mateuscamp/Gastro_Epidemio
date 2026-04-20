@@ -18,13 +18,13 @@ def menu():
     console.print()
 
 
-def submenu():
+def submenu(titulo, subtitulo=None):
     opcoes = "[1] SIM\n[2] NÃO"
     console.print(
         Panel(
             opcoes,
-            title="[bold red]EXCLUIR[/bold red]",
-            subtitle="[yellow]Deseja mesmo excluir o cadastro?[/yellow]",
+            title=f"[bold red]{titulo}[/bold red]",
+            subtitle=f"[yellow]{subtitulo}[/yellow]",
         )
     )
     console.print()

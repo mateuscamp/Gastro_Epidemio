@@ -14,7 +14,7 @@ while True:
 
     if opçao == 1:
         pele.cabeçalho("PESSOAS CADASTRADAS")
-        dados_paciente = memoria.leiarquivo(arquivo_bd)  # pede os dadps para a memoria
+        dados_paciente = memoria.leiarquivo(arquivo_bd)  # pede os dados para a memoria
 
         if dados_paciente:  # Verifica se a lista não está vazia
             pele.listar(dados_paciente)
@@ -68,7 +68,9 @@ while True:
             pele.msg_sucesso(
                 f"Cadastro encontrado: {resultado[0]}, {resultado[1]} anos, {resultado[2]} polipo(s)"
             )
-            pele.submenu()
+            titulo = f"Deseja mesmo excluir o cadastro de {resultado[0]}?"
+            subtitulo = "Essa ação não pode ser desfeita"
+            pele.submenu(titulo, subtitulo)
             sub_opcao = leiaint("Sua opção: ")
             if sub_opcao == 1:
                 memoria.excluicadastro(arquivo_bd, nome_busca)
