@@ -6,3 +6,11 @@ __pycache__/
 .env
 venv/
 .venv/
+# Direnv (pode conter caminhos locais ou segredos)
+.envrc
+
+# Banco de dados local (separar código de dados)
+dados.txt
+
+# Logs de erro e execução
+*.log
