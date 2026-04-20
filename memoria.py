@@ -3,7 +3,7 @@ import pele
 
 def buscarquivo(nome_arquivo):
     try:
-        with open(nome_arquivo, "rt") as _: # não vou usar Variavel
+        with open(nome_arquivo, "rt") as _:  # não vou usar Variavel
             pass
     except FileNotFoundError:
         return False
@@ -13,7 +13,7 @@ def buscarquivo(nome_arquivo):
 
 def criarquivo(nome_arquivo):
     try:
-        with open(nome_arquivo, "wt+") as _: # não vou usar Variavel
+        with open(nome_arquivo, "wt+") as _:  # não vou usar Variavel
             pass
     except Exception:
         print(
@@ -25,53 +25,93 @@ def criarquivo(nome_arquivo):
 
 def leiarquivo(nome_arquivo):
     try:
+        pacientes = []
         with open(nome_arquivo, "rt") as a:
             for linha in a:
-                dado = linha.replace("\n", "").split(';')
-                print(f"{dado[0]:<30}{dado[1]:>3} anos")
+                dado = linha.replace("\n", "").split(";")
+                pacientes.append(
+                    [dado[0], dado[1]]
+                )  # empacota nome e idade em uma mini-lista
+
+        return pacientes
 
     except Exception:
         pele.msg_erro("Erro ao ler o arquivo")
+        return []  # Retorna lista vazia em caso de erro
 
 
-def cadastrarquivo(nome_arquivo, nome="desconhecido", idade="0", polipo="0"):
+def cadastrarquivo(nome_arquivo, nome="desconhecido", idade=0, polipo=0):
     try:
         with open(nome_arquivo, "at") as a:
             try:
-                a.write(f"{nome};{idade};{polipo}\n")
+                a.write(f"{nome};{str(idade)};{str(polipo)}\n")
 
             except Exception:
                 pele.msg_erro("Houve um erro na escrita dos dados")
 
     except Exception:
-        pele.msg_erro("Houve um erro na abertura do banco de dados")
+        pele.msg_erro("Erro na abertura do banco de dados")
 
 
 def ordenarquivo(nome_arquivo):
     try:
-        with open(nome_arquivo, 'rt') as a:
-            linhas = a.readlines() # Variavel linhas guarda a lista
+        with open(nome_arquivo, "rt") as a:
+            linhas = a.readlines()  # Variavel linhas guarda a lista
             linhas.sort()
-        with open(nome_arquivo, 'wt') as a:
+        with open(nome_arquivo, "wt") as a:
             a.writelines(linhas)
 
     except Exception as e:
-        pele.msg_erro(f'Erro ao organizar o arquivo: {e}')
+        pele.msg_erro(f"Erro ao organizar o arquivo: {e}")
 
 
 def buscarpaciente(nome_arquivo, nome_procurado):
     try:
-        with open(nome_arquivo, 'rt') as a:
+        with open(nome_arquivo, "rt") as a:
             for linha in a:
-                dado = linha.strip().split(';')
+                dado = linha.strip().split(";")
                 if dado[0].upper() == nome_procurado.upper():
                     return dado
+
     except Exception:
-        pele.msg_erro('Erro ao buscar. Por favor, tente novamente')
-    return pele.msg_aviso('Não encontrado') # se o loop acabar sem o dado
+        pele.msg_erro("Erro ao buscar. Por favor, tente novamente")
+
+    return None  # se o loop acabar sem o dado
 
 
-def editarquivo(nome_arquivo, nome, idade, polipo):
+def editarquivo(
+    nome_arquivo, nome_procurado, nome_novo="desconhecido", idade_nova=0, polipo_novo=0
+):
     try:
-        with open(nome_arquivo, 'wt') as a:
-        
+        with open(nome_arquivo, "rt") as a:  # carrega na memoria
+            linhas = a.readlines()
+
+        for i, linha in enumerate(linhas):  # procura quem vai ser editado
+            dado = linha.strip().split(";")
+            if dado[0].upper() == nome_procurado.upper():
+                linhas[i] = f"{nome_novo};{idade_nova};{polipo_novo}\n"
+                break  # achou/trocou = sai do loop
+
+        with open(nome_arquivo, "wt") as a:  # salva a lista atualizada
+            a.writelines(linhas)
+
+    except Exception:
+        pele.msg_erro("Erro ao editar cadastro")
+
+
+def excluicadastro(nome_arquivo, nome_procurado):
+    try:
+        with open(nome_arquivo, "rt") as a:
+            linhas = a.readlines()
+
+        for linha in linhas:
+            dado = linha.strip().split(";")
+            if dado[0].upper() == nome_procurado.upper():
+                linhas.remove(linha)
+                break
+
+        with open(nome_arquivo, "wt") as a:
+            a.writelines(linhas)
+
+    except Exception:
+        pele.msg_erro("Erro ao excluir cadastro")

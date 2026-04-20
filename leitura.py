@@ -5,7 +5,7 @@ def leiaint(numero):
     while True:
         try:
             resposta = int(input(numero))
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             msg_aviso("Digite apenas números")
             continue
         except KeyboardInterrupt:
@@ -19,7 +19,7 @@ def leiafloat(numero):
     while True:
         try:
             resposta = float(input(numero))
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             msg_aviso("Digite apenas números")
             continue
         except KeyboardInterrupt:

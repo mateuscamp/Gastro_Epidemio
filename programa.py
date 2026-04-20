@@ -14,24 +14,60 @@ while True:
 
     if opçao == 1:
         pele.cabeçalho("PESSOAS CADASTRADAS")
-        memoria.leiarquivo(arquivo_bd)
+        dados_paciente = memoria.leiarquivo(arquivo_bd)  # pede os dadps para a memoria
+
+        if dados_paciente:  # Verifica se a lista não está vazia
+            pele.listar(dados_paciente)
+        else:
+            pele.msg_aviso("Ainda não há pacientes cadastrados")
 
     elif opçao == 2:
         pele.cabeçalho("NOVO CADASTRO")
         nome = input("Nome: ").strip().upper()
         idade = leiaint("Idade: ")
-        polipo = leiaint("Polipo: ")
+        polipo = leiaint("Polipo(s): ")
         memoria.cadastrarquivo(arquivo_bd, nome, idade, polipo)
         memoria.ordenarquivo(arquivo_bd)
         pele.msg_sucesso("Cadastro concuído com sucesso!")
 
-    elif opçao == 3:
+    elif opçao == 3:  # EM EDIÇÃO
         pele.cabeçalho("EDITAR CADASTRO")
-        nome = input("Nome completo do paciente que deseja editar:")
-        memoria.buscarpaciente(arquivo_bd)
+        nome_busca = input(
+            "Nome completo do paciente que deseja \033[33mEDITAR\033[m: "
+        )
+        resultado = memoria.buscarpaciente(arquivo_bd, nome_busca)
+        if resultado:  # não precisa coloca ==True (se retornar None entao é ==False)
+            pele.msg_sucesso(
+                f"Cadastro encontrado: {resultado[0]}, {resultado[1]} anos, {resultado[2]} polipo(s)"
+            )
+            pele.msg_aviso("Digite os novos dados")
+            nome_novo = input("Nome: ").strip().upper()
+            idade_nova = leiaint("Idade: ")
+            polipo_novo = leiaint("Polipo(s): ")
+            memoria.editarquivo(
+                arquivo_bd, nome_busca, nome_novo, idade_nova, polipo_novo
+            )
+            pele.msg_sucesso("Cadastro alterado com sucesso!")
+        else:
+            pele.msg_aviso("Cadastro não encontrado")
 
-    elif opçao == 4:
+    elif opçao == 4:  # EM EDIÇÃO
         pele.cabeçalho("EXCLUIR CADASTRO")
+        nome_busca = input(
+            "Nome completo do cadastro que deseja \033[1;31mEXCLUIR\033[m: "
+        )
+        resultado = memoria.buscarpaciente(arquivo_bd, nome_busca)
+        if resultado:
+            pele.msg_sucesso(
+                f"Cadastro encontrado: {resultado[0]}, {resultado[1]} anos, {resultado[2]} polipo(s)"
+            )
+            pele.submenu()
+            sub_opcao = leiaint("Sua opção: ")
+            if sub_opcao == 1:
+                memoria.excluicadastro(arquivo_bd, nome_busca)
+                pele.msg_sucesso("Cadastro excluído com sucesso")
+            elif sub_opcao == 2:
+                break
 
     elif opçao == 5:
         pele.msg_sucesso("Obrigado por usar o programa. Até logo!")
@@ -40,4 +76,4 @@ while True:
     else:
         pele.msg_erro("Digite uma opção válida!")
 
-    sleep(2)
+    sleep(1.5)

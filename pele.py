@@ -6,13 +6,26 @@ console = Console()
 
 
 def menu():
-    opcoes = "[1] Ver Cadastrados\n[2] Novo Cadastro\n[3] Sair"
+    opcoes = "[1] Ver Cadastrados\n[2] Novo Cadastro\n[3] Editar Cadastro\n[4] Excluir Cadastro\n[5] Sair"
     console.print(
         Panel(
             opcoes,
             title="[bold blue]MENU PRINCIPAL[/bold blue]",
             expand=False,
             subtitle="Escolha uma opção",
+        )
+    )
+    console.print()
+
+
+def submenu():
+    opcoes = "[1] SIM\n[2] NÃO"
+    console.print(
+        Panel(
+            opcoes,
+            title="[bold red]EXCLUIR[/bold red]",
+            expand=False,
+            subtitle="[yellow]Deseja mesmo excluir o cadastro?[/yellow]",
         )
     )
     console.print()
