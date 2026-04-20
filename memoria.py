@@ -40,11 +40,13 @@ def leiarquivo(nome_arquivo):
         return []  # Retorna lista vazia em caso de erro
 
 
-def cadastrarquivo(nome_arquivo, nome="desconhecido", idade=0, polipo=0):
+def cadastrarquivo(
+    nome_arquivo, nome="desconhecido", idade=0, sexo="desconhecido", polipo=0
+):
     try:
         with open(nome_arquivo, "at") as a:
             try:
-                a.write(f"{nome};{str(idade)};{str(polipo)}\n")
+                a.write(f"{nome};{str(idade)};{sexo};{str(polipo)}\n")
 
             except Exception:
                 pele.msg_erro("Houve um erro na escrita dos dados")
@@ -80,7 +82,12 @@ def buscarpaciente(nome_arquivo, nome_procurado):
 
 
 def editarquivo(
-    nome_arquivo, nome_procurado, nome_novo="desconhecido", idade_nova=0, polipo_novo=0
+    nome_arquivo,
+    nome_procurado,
+    nome_novo="desconhecido",
+    idade_nova=0,
+    sexo_novo="desconhecido",
+    polipo_novo=0,
 ):
     try:
         with open(nome_arquivo, "rt") as a:  # carrega na memoria
@@ -89,7 +96,7 @@ def editarquivo(
         for i, linha in enumerate(linhas):  # procura quem vai ser editado
             dado = linha.strip().split(";")
             if dado[0].upper() == nome_procurado.upper():
-                linhas[i] = f"{nome_novo};{idade_nova};{polipo_novo}\n"
+                linhas[i] = f"{nome_novo};{idade_nova};{sexo_novo};{polipo_novo}\n"
                 break  # achou/trocou = sai do loop
 
         with open(nome_arquivo, "wt") as a:  # salva a lista atualizada

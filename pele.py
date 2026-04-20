@@ -24,7 +24,6 @@ def submenu():
         Panel(
             opcoes,
             title="[bold red]EXCLUIR[/bold red]",
-            expand=False,
             subtitle="[yellow]Deseja mesmo excluir o cadastro?[/yellow]",
         )
     )
